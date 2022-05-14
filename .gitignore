@@ -1,4 +1,4 @@
-seti-env.ps1
+secret-set-env.ps1
 
 # Local .terraform directories
 **/.terraform/*
