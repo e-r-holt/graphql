@@ -1,0 +1,16 @@
+# version: "3.9"  # optional since v1.27.0
+services:
+  database:
+    image: genschsa/mysql-employees:latest
+    networks:
+      - back-tier
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+  golang-graphql:
+    image: deemaflotchy/graphql:latest
+    networks:
+      - back-tier
+      - front-tier
+networks:
+  back-tier:
+  front-tier:
