@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -62,7 +61,9 @@ func dbConn() *sql.DB {
 //     }
 //     return albums, nil
 // }
-func startGraphql() {
+
+
+func startGraphql() (graphql.Schema, error) {
 	// Schema
 	fields := graphql.Fields{
 		"hello": &graphql.Field{
@@ -77,24 +78,16 @@ func startGraphql() {
 	schema, err := graphql.NewSchema(schemaConfig)
 	if err != nil {
 		log.Fatalf("failed to create new schema, error: %v", err)
+		return schema, err
 	}
-
-	// Query
-	query := `
-		{
-			hello
-		}
-	`
-	params := graphql.Params{Schema: schema, RequestString: query}
-	r := graphql.Do(params)
-	if len(r.Errors) > 0 {
-		log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
-	}
-	rJSON, _ := json.Marshal(r)
-	fmt.Printf("%s \n", rJSON) // {"data":{"hello":"world"}}
+	return schema, nil
 }
 func main() {
+	_, err := startGraphql()
+	if err !=nil {
+		log.Fatalf("failed to start graphql: %s", err)
+	}
 	db:= dbConn()
-
+	defer db.Close()
 	fmt.Print("Hello World")
 }
