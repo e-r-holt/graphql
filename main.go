@@ -10,6 +10,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/graphql-go/graphql"
 )
+
 func dbConn() *sql.DB {
 	// Capture connection properties.
 	cfg := mysql.Config{
@@ -42,7 +43,7 @@ func dbConn() *sql.DB {
 // func albumsByArtist(name string) ([]Album, error) {
 //     // An albums slice to hold data from returned rows.
 //     var albums []Album
-// 
+//
 //     rows, err := db.Query("SELECT * FROM album WHERE artist = ?", name)
 //     if err != nil {
 //         return nil, fmt.Errorf("albumsByArtist %q: %v", name, err)
@@ -61,7 +62,6 @@ func dbConn() *sql.DB {
 //     }
 //     return albums, nil
 // }
-
 
 func startGraphql() (graphql.Schema, error) {
 	// Schema
@@ -84,10 +84,10 @@ func startGraphql() (graphql.Schema, error) {
 }
 func main() {
 	_, err := startGraphql()
-	if err !=nil {
+	if err != nil {
 		log.Fatalf("failed to start graphql: %s", err)
 	}
-	db:= dbConn()
+	db := dbConn()
 	defer db.Close()
 	fmt.Print("Hello World")
 }
