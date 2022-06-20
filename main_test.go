@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/graphql-go/graphql"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStartGraphQL(t *testing.T) { // Query
@@ -19,11 +20,13 @@ func TestStartGraphQL(t *testing.T) { // Query
 			hello
 		}
 	`
+	expected := `{"data":{"hello":"world"}}`
 	params := graphql.Params{Schema: schema, RequestString: query}
 	r := graphql.Do(params)
 	if len(r.Errors) > 0 {
 		t.Errorf("failed to execute graphql operation, errors: %+v", r.Errors)
+		t.FailNow()
 	}
 	rJSON, _ := json.Marshal(r)
-	t.Logf("%s \n", rJSON) // {"data":{"hello":"world"}}
+	require.JSONEq(t, expected, string(rJSON), "hello world comparison failed: %s", "formatted")
 }
